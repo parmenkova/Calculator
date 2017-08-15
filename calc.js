@@ -27,11 +27,15 @@ const buttons = {
 
 var buffer = [];
 
+var finalStatement = false;
+
 function last(arr) {
   return arr[arr.length - 1];
 }
 
 function ifNumber(value) { //нажали цифру
+    if (finalStatement) buffer = [];
+    finalStatement = false;
     // ЕСЛИ буфер пустой или последний элемент буфера +, -, * или /
     if (!buffer.length || last(buffer) === '+' || last(buffer) === '-' || last(buffer) === '*' || last(buffer) === '/') {
         buffer.push(value);
@@ -45,6 +49,7 @@ function ifNumber(value) { //нажали цифру
 }
 
 function ifSighn(value) { //нажали +, -, * или /
+    finalStatement = false;
     // ЕСЛИ буфер пустой
     if (!buffer.length) {
         buffer[0] = '0';
@@ -70,6 +75,9 @@ function ifSighn(value) { //нажали +, -, * или /
 }
 
 function ifPoint() {
+    if (finalStatement) buffer = [];
+    finalStatement = false;
+    
     if (!buffer.length || last(buffer) === '+' || last(buffer) === '-' || last(buffer) === '*' || last(buffer) === '/') {
         buffer.push('0.');
     }
@@ -97,6 +105,7 @@ function getResult() {
     result = eval(buffer.join(' '));
     buffer[0] = result;
     buffer.length = 1;
+    finalStatement = true;
 }
 
 // функция для удаления точки, если она стоит в конце последнего элемента буфера
@@ -108,7 +117,7 @@ function checkLastElem() {
     }
 }
 
-function appendToBuffer(buffer, value) {
+function appendToBuffer(value) {
     // ЕСЛИ ввели знак +, -, * или /
     if (value === "+" || value === "-" || value === "*" || value === "/") {
         ifSighn(value);
@@ -162,6 +171,6 @@ document.addEventListener('click', function (event) {
   var value = getValue(event.target)
 
   if (value) {
-    appendToBuffer(buffer, value)
+    appendToBuffer(value)
   }
 })
