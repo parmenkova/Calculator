@@ -1,0 +1,16 @@
+.btn-row {
+    display: flex;
+    justify-content: space-between;
+    width: 200px;
+    margin-bottom: 10px;
+}
+
+.field {
+    width: 200px;
+    height: 20px;
+    margin-bottom: 10px;
+}
+
+.no-btn {
+    background-color: red;
+}
