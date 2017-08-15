@@ -68,7 +68,7 @@ function ifSighn(value) { //нажали +, -, * или /
         buffer.push(value);
     }
 }
-// тупой комментарий
+
 function ifPoint() {
     if (!buffer.length || last(buffer) === '+' || last(buffer) === '-' || last(buffer) === '*' || last(buffer) === '/') {
         buffer.push('0.');
