@@ -174,5 +174,3 @@ document.addEventListener('click', function (event) {
     appendToBuffer(value)
   }
 })
-
-// new comment
