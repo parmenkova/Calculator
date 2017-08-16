@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Calculator Tests</title>
+  <!-- Add mocha reporter styles -->
+  <link href="https://cdn.rawgit.com/mochajs/mocha/2.2.5/mocha.css" rel="stylesheet" />
+</head>
+<body>
+  <!-- Mocha report container -->
+  <div id="mocha"></div>
+
+  <!-- Add mocha libraries -->
+  <script src="https://cdn.rawgit.com/Automattic/expect.js/0.3.1/index.js"></script>
+  <script src="https://cdn.rawgit.com/mochajs/mocha/2.2.5/mocha.js"></script>
+
+  <!-- Set up testing preferences -->
+  <script>mocha.setup('bdd')</script>
+
+  <!-- Include test targets -->
+  <script src="../calc.js"></script>
+
+  <!-- Include tests -->
+  <script src="calc.tests.js"></script>
+
+  <!-- Run tests -->
+  <script>mocha.run();</script>
+</body>
+</html>
