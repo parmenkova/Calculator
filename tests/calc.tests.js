@@ -22,3 +22,25 @@ describe('ifNumber', function () {
     expect(ifNumber(['1', '+', '0'], '5')).to.eql(['1', '+', '5']);
   });
 })
+
+describe('ifSighn', function () {
+  it('appends zero and value as the first and the second elements of the buffer', function () {
+    expect(ifSighn([], '+')).to.eql(['0', '+']);
+  });
+
+  it('replaces last element of the buffer whith value', function () {
+    expect(ifSighn(['1', '+'], '*')).to.eql(['1', '*']);
+  });
+
+  it('appends the result of operation and value as the first and the second elements of the buffer', function () {
+    expect(ifSighn(['1', '+', '2'], '*')).to.eql(['3', '*']);
+  });
+
+  it('appends value as a new element of the buffer', function () {
+    expect(ifSighn(['123'], '+')).to.eql(['123', '+']);
+  });
+
+  it('appends value as a new element of the buffer and deletes the point from the end of the first element of the buffer', function () {
+    expect(ifSighn(['123.'], '+')).to.eql(['123', '+']);
+  });
+});
