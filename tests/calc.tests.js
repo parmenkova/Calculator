@@ -76,3 +76,11 @@ describe('ifAc', function () {
     expect(ifAc(['1', '+', '12'])).to.eql([]);
   });
 });
+
+describe('ifC', function () {
+  it('clears last element of the buffer', function () {
+    expect(ifC(['1'])).to.eql([]);
+    expect(ifC(['1', '+'])).to.eql(['1']);
+    expect(ifC(['1', '+', '27'])).to.eql(['1', '+']);
+  });
+});
