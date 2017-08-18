@@ -66,5 +66,13 @@ describe('ifPoint', function () {
     expect(ifPoint(['1.1'])).to.eql(['1.1']);
     expect(ifPoint(['1.'])).to.eql(['1.']);
     expect(ifPoint(['3', '+', '1.2'])).to.eql(['3', '+', '1.2']);
-  })
-})
+  });
+});
+
+describe('ifAc', function () {
+  it('clears the buffer', function () {
+    expect(ifAc(['1'])).to.eql([]);
+    expect(ifAc(['1', '+'])).to.eql([]);
+    expect(ifAc(['1', '+', '12'])).to.eql([]);
+  });
+});
