@@ -57,7 +57,7 @@ function ifSighn(buffer, value) { //нажали +, -, * или /
         buffer[1] = value;
     // ЕСЛИ последний элемент в буфере знак, заменяем его на новый введённый
     } else if (last(buffer) === '+' || last(buffer) === '-' || last(buffer) === '*' || last(buffer) === '/') {
-        last(buffer) = value;
+        buffer[buffer.length - 1] = value;
     // ЕСЛИ в буфере уже есть два операнда и знак между ними
     } else if (buffer.length > 2) {
         // считаем
