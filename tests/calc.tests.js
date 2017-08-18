@@ -50,3 +50,21 @@ describe('checkLastElem', function () {
     expect(checkLastElem(['123.'])).to.eql(['123']);
   });
 });
+
+describe('ifPoint', function () {
+  it('appends to the buffer new element "0."', function () {
+    expect(ifPoint([])).to.eql(['0.']);
+    expect(ifPoint(['1', '+'])).to.eql(['1', '+', '0.']);
+  });
+
+  it('appends the point to the last element of the buffer', function () {
+    expect(ifPoint(['1'])).to.eql(['1.']);
+    expect(ifPoint(['1', '+', '1'])).to.eql(['1', '+', '1.']);
+  });
+
+  it('doesn\'t append the point', function () {
+    expect(ifPoint(['1.1'])).to.eql(['1.1']);
+    expect(ifPoint(['1.'])).to.eql(['1.']);
+    expect(ifPoint(['3', '+', '1.2'])).to.eql(['3', '+', '1.2']);
+  })
+})
