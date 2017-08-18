@@ -44,3 +44,9 @@ describe('ifSighn', function () {
     expect(ifSighn(['123.'], '+')).to.eql(['123', '+']);
   });
 });
+
+describe('checkLastElem', function () {
+  it('deletes the point from the end of the last element of the buffer', function () {
+    expect(checkLastElem(['123.'])).to.eql(['123']);
+  });
+});
