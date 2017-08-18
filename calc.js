@@ -119,7 +119,7 @@ function checkLastElem(buffer) {
     // проверяем, чтобы последний элемент не кончался точкой
     if (last(last(buffer)) === '.') {
         // убираем точку, если она есть
-        last(buffer) = last(buffer).slice(0, -1);
+        buffer[buffer.length - 1] = last(buffer).slice(0, -1);
     }
     return buffer;
 }
