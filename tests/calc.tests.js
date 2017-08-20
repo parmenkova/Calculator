@@ -84,3 +84,13 @@ describe('ifC', function () {
     expect(ifC(['1', '+', '27'])).to.eql(['1', '+']);
   });
 });
+
+describe('getResult', function () {
+  it('returns result', function () {
+    expect(getResult(['1', '+', '2'])).to.eql(['3']);
+    expect(getResult(['1', '+'])).to.eql(['2']);
+    expect(getResult(['2', '*'])).to.eql(['4']);
+    expect(getResult(['2', '/'])).to.eql(['1']);
+    expect(getResult(['2', '-'])).to.eql(['0']);
+  })
+})
