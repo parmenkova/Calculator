@@ -105,7 +105,7 @@ function ifC(buffer) {
 function getResult(buffer) {
     var result;
     // если только один операнд и знак, то добавляем вторым операндом ноль
-    if (buffer.length === 2) buffer.push('0');
+    if (buffer.length === 2) buffer.push(buffer[0]);
     
     result = eval(buffer.join(' '));
     buffer[0] = result;
