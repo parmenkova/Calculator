@@ -147,6 +147,7 @@ function appendToBuffer(buffer, value) {
     // ЕСЛИ ввели число
     } else {
         buffer = ifNumber(buffer, value);
+
     }
     return buffer;
 }
@@ -179,6 +180,6 @@ document.addEventListener('click', function (event) {
 
   if (value) {
     buffer = appendToBuffer(buffer, value);
-    field.value = buffer.join(' ');
+    field.value = buffer[2] || buffer[0] || '0';
   }
 })
