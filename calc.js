@@ -128,31 +128,25 @@ function appendToBuffer(buffer, value) {
     // ЕСЛИ ввели знак +, -, * или /
     if (value === "+" || value === "-" || value === "*" || value === "/") {
         buffer = ifSighn(buffer, value);
-        field.value = buffer.join(' ');
 
     // ЕСЛИ ввели точку
     } else if (value === '.') {
         buffer = ifPoint(buffer);
-        field.value = buffer.join(' ');
 
     // ЕСЛИ нажали очистку
     } else if (value === 'ac') {
         buffer = ifAc(buffer);
-        field.value = '';
 
     } else if (value === 'c') {
         buffer = ifC(buffer);
-        field.value = buffer.join(' ');
 
     // ЕСЛИ нажали равно
     } else if (value === '=') {
         buffer = getResult(buffer);
-        field.value = buffer[0];
 
     // ЕСЛИ ввели число
     } else {
         buffer = ifNumber(buffer, value);
-        field.value = buffer.join(' ');
     }
     return buffer;
 }
@@ -184,6 +178,7 @@ document.addEventListener('click', function (event) {
   var value = getValue(event.target)
 
   if (value) {
-    buffer = appendToBuffer(buffer, value)
+    buffer = appendToBuffer(buffer, value);
+    field.value = buffer.join(' ');
   }
 })
