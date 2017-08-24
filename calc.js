@@ -125,31 +125,17 @@ function checkLastElem(buffer) {
 }
 
 function appendToBuffer(buffer, value) {
-    // ЕСЛИ ввели знак +, -, * или /
-    if (value === "+" || value === "-" || value === "*" || value === "/") {
-        buffer = ifSighn(buffer, value);
-
-    // ЕСЛИ ввели точку
-    } else if (value === '.') {
-        buffer = ifPoint(buffer);
-
-    // ЕСЛИ нажали очистку
-    } else if (value === 'ac') {
-        buffer = ifAc(buffer);
-
-    } else if (value === 'c') {
-        buffer = ifC(buffer);
-
-    // ЕСЛИ нажали равно
-    } else if (value === '=') {
-        buffer = getResult(buffer);
-
-    // ЕСЛИ ввели число
-    } else {
-        buffer = ifNumber(buffer, value);
-
+    switch(value) {
+        case('+'):
+        case('-'):
+        case('/'):
+        case('*'): return ifSighn(buffer, value);
+        case('.'): return ifPoint(buffer);
+        case('ac'): return ifAc(buffer);
+        case('c'): return ifC(buffer);
+        case('='): return getResult(buffer);
+        default: return ifNumber(buffer, value);
     }
-    return buffer;
 }
 
 function getValue(target) {
