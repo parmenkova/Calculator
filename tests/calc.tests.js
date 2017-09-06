@@ -100,13 +100,22 @@ describe('ifPercent', function () {
     expect(ifPercent(['2'])).to.eql(['0.02']);
   });
 
-  it('divides the second element of the buffer by 100', function () {
+  it('divides the third element of the buffer by 100', function () {
     expect(ifPercent(['64.35', '*', '15'])).to.eql(['64.35', '*', '0.15']);
     expect(ifPercent(['64.35', '/', '15'])).to.eql(['64.35', '/', '0.15']);
   });
 
-  it('replaces the second element of the buffer with value equal to first element divided by 100 and multiplied by the second element', function () {
+  it('replaces the third element of the buffer with value equal to the first element divided by 100 and multiplied by the third element', function () {
     expect(ifPercent(['139', '-', '35'])).to.eql(['139', '-', '48.65']);
     expect(ifPercent(['139', '+', '35'])).to.eql(['139', '+', '48.65']);
   });
+
+  it('adds the third element equal to the first element divided by 100 and multiplied by itself', function () {
+    expect(ifPercent(['5', '+'])).to.eql(['5', '+', '0.25']);
+  });
+
+  it('adds the third element equal to the first element divided by 100', function () {
+    expect(ifPercent(['5', '/'])).to.eql(['5', '/', '0.05']);
+  });
+
 });
