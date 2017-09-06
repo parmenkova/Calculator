@@ -92,5 +92,21 @@ describe('getResult', function () {
     expect(getResult(['2', '*'])).to.eql(['4']);
     expect(getResult(['2', '/'])).to.eql(['1']);
     expect(getResult(['2', '-'])).to.eql(['0']);
-  })
-})
+  });
+});
+
+describe('ifPercent', function () {
+  it('divides a single element of the buffer by 100', function () {
+    expect(ifPercent(['2'])).to.eql(['0.02']);
+  });
+
+  it('divides the second element of the buffer by 100', function () {
+    expect(ifPercent(['64.35', '*', '15'])).to.eql(['64.35', '*', '0.15']);
+    expect(ifPercent(['64.35', '/', '15'])).to.eql(['64.35', '/', '0.15']);
+  });
+
+  it('replaces the second element of the buffer with value equal to first element divided by 100 and multiplied by the second element', function () {
+    expect(ifPercent(['139', '-', '35'])).to.eql(['139', '-', '48.65']);
+    expect(ifPercent(['139', '+', '35'])).to.eql(['139', '+', '48.65']);
+  });
+});
