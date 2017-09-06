@@ -22,7 +22,8 @@ const buttons = {
   divide: document.querySelector('.btn-divide'),
   ac: document.querySelector('.btn-ac'),
   equal: document.querySelector('.btn-equal'),
-  с: document.querySelector('.btn-с')
+  с: document.querySelector('.btn-с'),
+  percent: document.querySelector('.btn-percent')
 };
 
 var buffer = [];
@@ -102,6 +103,29 @@ function ifC(buffer) {
     return buffer;
 }
 
+function ifPercent(buffer) {
+    if (buffer.length === 1) {
+        buffer[0] = buffer[0] / 100;
+    }
+    if (buffer.length === 2) {
+        if (buffer[1] === '+' || buffer[1] === '-') {
+            buffer.push(buffer[0] / 100 * buffer[0]);
+            return buffer;
+        } else {
+            buffer.push(buffer[0] / 100);
+            return buffer;
+        }
+    }
+    if (buffer.length === 3) {
+        if (buffer[1] === '+' || buffer[1] === '-') {
+            buffer[2] = buffer[0] / 100 * buffer[2];
+        } else {
+            buffer[2] = buffer[2] / 100;
+        }
+    }
+    return buffer; 
+}
+
 function getResult(buffer) {
     var result;
     // если только один операнд и знак, то добавляем вторым операндом ноль
@@ -133,6 +157,7 @@ function appendToBuffer(buffer, value) {
         case('.'): return ifPoint(buffer);
         case('ac'): return ifAc(buffer);
         case('c'): return ifC(buffer);
+        case('%'): return ifPercent(buffer);
         case('='): return getResult(buffer);
         default: return ifNumber(buffer, value);
     }
@@ -158,6 +183,7 @@ function getValue(target) {
     case buttons.ac: return 'ac';
     case buttons.equal: return '=';
     case buttons.с: return 'c';
+    case buttons.percent: return '%';
   }
 }
 
