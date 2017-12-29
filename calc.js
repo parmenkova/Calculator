@@ -1,7 +1,5 @@
 "use strict"
 
-// https://codepen.io/kinday/pen/xLERbp?editors=1010
-
 var field = document.getElementById("field");
 
 const buttons = {
@@ -34,43 +32,32 @@ function last(arr) {
   return arr[arr.length - 1];
 }
 
-function ifNumber(buffer, value) { //нажали цифру
+function ifNumber(buffer, value) {
     if (finalStatement) buffer = [];
     finalStatement = false;
-    // ЕСЛИ буфер пустой или последний элемент буфера +, -, * или /
     if (!buffer.length || last(buffer) === '+' || last(buffer) === '-' || last(buffer) === '*' || last(buffer) === '/') {
         buffer.push(value);
-    // ЕСЛИ последний элемент буфера ноль и мы вводим число
     } else if (last(buffer) === 0 || last(buffer) === '0') {
         buffer[buffer.length - 1] = value;
-    // в остальных случаях просто добавляем к последнему элементу
     } else {
         buffer[buffer.length - 1] += value;
     }
     return buffer;
 }
 
-function ifSighn(buffer, value) { //нажали +, -, * или /
+function ifSighn(buffer, value) {
     finalStatement = false;
-    // ЕСЛИ буфер пустой
     if (!buffer.length) {
         buffer[0] = '0';
         buffer[1] = value;
-    // ЕСЛИ последний элемент в буфере знак, заменяем его на новый введённый
     } else if (last(buffer) === '+' || last(buffer) === '-' || last(buffer) === '*' || last(buffer) === '/') {
         buffer[buffer.length - 1] = value;
-    // ЕСЛИ в буфере уже есть два операнда и знак между ними
     } else if (buffer.length > 2) {
-        // считаем
         var result = eval(buffer.join(' '));
         buffer.length = 2;
-        // добавляем результат первым элементом
         buffer[0] = result;
-        // введённый знак вторым
         buffer[1] = value;
-    // в остальных случаях просто добавляем введённый знак вторым элементом в буфер
     } else {
-        // проверяем, чтобы не было точки в конце буфера
         buffer = checkLastElem(buffer);
         buffer.push(value);
     }
@@ -128,7 +115,6 @@ function ifPercent(buffer) {
 
 function getResult(buffer) {
     var result;
-    // если только один операнд и знак, то добавляем вторым операндом ноль
     if (buffer.length === 2) buffer.push(buffer[0]);
     
     result = eval(buffer.join(' '));
@@ -138,11 +124,8 @@ function getResult(buffer) {
     return buffer;
 }
 
-// функция для удаления точки, если она стоит в конце последнего элемента буфера
 function checkLastElem(buffer) {
-    // проверяем, чтобы последний элемент не кончался точкой
     if (last(last(buffer)) === '.') {
-        // убираем точку, если она есть
         buffer[buffer.length - 1] = last(buffer).slice(0, -1);
     }
     return buffer;
