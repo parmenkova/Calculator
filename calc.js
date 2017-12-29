@@ -21,7 +21,8 @@ const buttons = {
   ac: document.querySelector('.btn-ac'),
   equal: document.querySelector('.btn-equal'),
   с: document.querySelector('.btn-с'),
-  percent: document.querySelector('.btn-percent')
+  percent: document.querySelector('.btn-percent'),
+  posNeg: document.querySelector('.btn-pos-neg')
 };
 
 var buffer = [];
@@ -35,13 +36,16 @@ function last(arr) {
 function ifNumber(buffer, value) {
     if (finalStatement) buffer = [];
     finalStatement = false;
-    if (!buffer.length || last(buffer) === '+' || last(buffer) === '-' || last(buffer) === '*' || last(buffer) === '/') {
+    if (!buffer.length || last(buffer) === '+' || (last(buffer) === '-' && buffer.length !== 1) || last(buffer) === '*' || last(buffer) === '/') {
         buffer.push(value);
     } else if (last(buffer) === 0 || last(buffer) === '0') {
         buffer[buffer.length - 1] = value;
+    } else if (buffer.length === 1 && buffer[0] === '-') {
+        buffer[0] += value;
     } else {
         buffer[buffer.length - 1] += value;
     }
+    // function needs adding some code, one test doesn't pass
     return buffer;
 }
 
@@ -113,6 +117,18 @@ function ifPercent(buffer) {
     return buffer; 
 }
 
+function ifPosNeg(buffer) {
+    if ((buffer.length === 1 && buffer[0] !== '-') || buffer.length === 3) {
+        buffer[buffer.length - 1] = buffer[buffer.length - 1] * -1;
+    }
+    if (!buffer.length) {
+        buffer.push('-');
+    }
+
+    // function needs finalization, only two tests pass
+    return buffer;
+}
+
 function getResult(buffer) {
     var result;
     if (buffer.length === 2) buffer.push(buffer[0]);
@@ -141,6 +157,7 @@ function appendToBuffer(buffer, value) {
         case('ac'): return ifAc(buffer);
         case('c'): return ifC(buffer);
         case('%'): return ifPercent(buffer);
+        case('+/-'): return ifPosNeg(buffer);
         case('='): return getResult(buffer);
         default: return ifNumber(buffer, value);
     }
@@ -167,6 +184,7 @@ function getValue(target) {
     case buttons.equal: return '=';
     case buttons.с: return 'c';
     case buttons.percent: return '%';
+    case buttons.posNeg: return '+/-';
   }
 }
 
