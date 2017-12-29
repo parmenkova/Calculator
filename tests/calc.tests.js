@@ -21,7 +21,15 @@ describe('ifNumber', function () {
     expect(ifNumber(['0'], '5')).to.eql(['5']);
     expect(ifNumber(['1', '+', '0'], '5')).to.eql(['1', '+', '5']);
   });
-})
+
+  it('adds value to a single element equal to minus', function () {
+    expect(ifNumber(['-'], '5')).to.eql(['-5']);
+  });
+
+  it('adds value to a third element equal to minus', function () {
+    expect(ifNumber(['5', '+', '-'], '5')).to.eql(['5', '+', '-5']);
+  });
+});
 
 describe('ifSighn', function () {
   it('appends zero and value as the first and the second elements of the buffer', function () {
@@ -119,3 +127,32 @@ describe('ifPercent', function () {
   });
 
 });
+
+describe('ifPosNeg', function () {
+  it('changes last entered value to opposite', function() {
+    expect(ifPosNeg(['2'])).to.eql(['-2']);
+    expect(ifPosNeg(['-29'])).to.eql(['29']);
+    expect(ifPosNeg(['5', '+', '5'])).to.eql(['5', '+', '-5']);
+    expect(ifPosNeg(['5', '+', '-25'])).to.eql(['5', '+', '25']);
+  });
+
+  it('adds minus if buffer is empty', function() {
+    expect(ifPosNeg([])).to.eql(['-']);
+  });
+
+  it('replases zero with minus', function () {
+    expect(ifPosNeg(['0'])).to.eql(['-']);
+  });
+
+  it('replases minus with zero', function () {
+    expect(ifPosNeg(['-'])).to.eql(['0']);
+  });
+
+  it('adds minus as third element', function () {
+    expect(ifPosNeg(['5', '+'])).to.eql(['5', '+', '-']);
+  });
+
+  it('delete minus as third element', function () {
+    expect(ifPosNeg(['5', '+', '-'])).to.eql(['5', '+']);
+  });
+})
