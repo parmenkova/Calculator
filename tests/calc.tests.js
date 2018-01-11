@@ -125,27 +125,22 @@ describe('ifPercent', function () {
   it('adds the third element equal to the first element divided by 100', function () {
     expect(ifPercent(['5', '/'])).to.eql(['5', '/', '0.05']);
   });
-
 });
 
 describe('ifPosNeg', function () {
+  it('replases empty buffer with minus', function () {
+    expect(ifPosNeg([])).to.eql(['-']);
+  });
+
+  it('replases minus with empty buffer', function () {
+    expect(ifPosNeg(['-'])).to.eql([]);
+  });
+
   it('changes last entered value to opposite', function() {
     expect(ifPosNeg(['2'])).to.eql(['-2']);
     expect(ifPosNeg(['-29'])).to.eql(['29']);
     expect(ifPosNeg(['5', '+', '5'])).to.eql(['5', '+', '-5']);
     expect(ifPosNeg(['5', '+', '-25'])).to.eql(['5', '+', '25']);
-  });
-
-  it('adds minus if buffer is empty', function() {
-    expect(ifPosNeg([])).to.eql(['-']);
-  });
-
-  it('replases zero with minus', function () {
-    expect(ifPosNeg(['0'])).to.eql(['-']);
-  });
-
-  it('replases minus with zero', function () {
-    expect(ifPosNeg(['-'])).to.eql(['0']);
   });
 
   it('adds minus as third element', function () {

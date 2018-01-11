@@ -36,16 +36,18 @@ function last(arr) {
 function ifNumber(buffer, value) {
     if (finalStatement) buffer = [];
     finalStatement = false;
-    if (!buffer.length || last(buffer) === '+' || (last(buffer) === '-' && buffer.length !== 1) || last(buffer) === '*' || last(buffer) === '/') {
+
+    if (!buffer.length || last(buffer) === '+' || (last(buffer) === '-' && buffer.length !== 1 && buffer.length !== 3) || last(buffer) === '*' || last(buffer) === '/') {
         buffer.push(value);
     } else if (last(buffer) === 0 || last(buffer) === '0') {
         buffer[buffer.length - 1] = value;
     } else if (buffer.length === 1 && buffer[0] === '-') {
         buffer[0] += value;
+    } else if (buffer.length === 3 && buffer[2] === '-') {
+        buffer[2] += value;
     } else {
         buffer[buffer.length - 1] += value;
     }
-    // function needs adding some code, one test doesn't pass
     return buffer;
 }
 
@@ -118,14 +120,18 @@ function ifPercent(buffer) {
 }
 
 function ifPosNeg(buffer) {
-    if ((buffer.length === 1 && buffer[0] !== '-') || buffer.length === 3) {
-        buffer[buffer.length - 1] = buffer[buffer.length - 1] * -1;
-    }
-    if (!buffer.length) {
+    if (finalStatement) buffer = [];
+    finalStatement = false;
+    
+    if (buffer[0] === '-') {
+        buffer = [];
+    } else if ((buffer.length === 1 && buffer[0] !== '-') || buffer.length === 3 && buffer[2] !== '-') {
+        buffer[buffer.length - 1] = buffer[buffer.length - 1] * '-1';
+    } else if (!buffer.length || buffer.length === 2) {
         buffer.push('-');
+    } else {
+        buffer.length = 2;
     }
-
-    // function needs finalization, only two tests pass
     return buffer;
 }
 
