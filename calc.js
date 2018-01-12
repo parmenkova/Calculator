@@ -1,6 +1,6 @@
 "use strict"
 
-var field = document.getElementById("field");
+let field = document.getElementById("field");
 
 const buttons = {
   one: document.querySelector('.btn-one'),
@@ -25,16 +25,16 @@ const buttons = {
   posNeg: document.querySelector('.btn-pos-neg')
 };
 
-var buffer = [];
+let buffer = [];
 
-var finalStatement = false;
+let finalStatement = false;
 
 function last(arr) {
   return arr[arr.length - 1];
 }
 
 function ifNumber(buffer, value) {
-    if (finalStatement) buffer = [];
+    buffer = finalStatement ? [] : buffer;
     finalStatement = false;
 
     if (!buffer.length || last(buffer) === '+' || (last(buffer) === '-' && buffer.length !== 1 && buffer.length !== 3) || last(buffer) === '*' || last(buffer) === '/') {
@@ -59,7 +59,7 @@ function ifSighn(buffer, value) {
     } else if (last(buffer) === '+' || last(buffer) === '-' || last(buffer) === '*' || last(buffer) === '/') {
         buffer[buffer.length - 1] = value;
     } else if (buffer.length > 2) {
-        var result = eval(buffer.join(' '));
+        let result = eval(buffer.join(' '));
         buffer.length = 2;
         buffer[0] = result;
         buffer[1] = value;
@@ -71,13 +71,13 @@ function ifSighn(buffer, value) {
 }
 
 function ifPoint(buffer) {
-    if (finalStatement) buffer = [];
+    buffer = finalStatement ? [] : buffer;
     finalStatement = false;
     
     if (!buffer.length || last(buffer) === '+' || last(buffer) === '-' || last(buffer) === '*' || last(buffer) === '/') {
         buffer.push('0.');
     }
-    var lastElement = last(buffer);
+    let lastElement = last(buffer);
     if (lastElement.indexOf('.') === -1) {
         buffer[buffer.length - 1] += ".";
     }
@@ -136,7 +136,7 @@ function ifPosNeg(buffer) {
 }
 
 function getResult(buffer) {
-    var result;
+    let result;
     if (buffer.length === 2) buffer.push(buffer[0]);
     
     result = eval(buffer.join(' '));
@@ -195,7 +195,7 @@ function getValue(target) {
 }
 
 document.addEventListener('click', function (event) {
-  var value = getValue(event.target)
+  let value = getValue(event.target)
 
   if (value) {
     buffer = appendToBuffer(buffer, value);
