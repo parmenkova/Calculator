@@ -2,11 +2,11 @@ const express = require('express')
 const app = express()
 
 app.get('/calculate', (req, res) => {
-    const left = + req.query['left']
-    const right = + req.query['right']
+    let left = req.query['left']
+    let right = req.query['right']
     const action = req.query['action']
 
-    if (isNaN(right)) {
+    if (!right) {
         res.status(400).json({
             "errors": [
                 {
@@ -19,7 +19,7 @@ app.get('/calculate', (req, res) => {
         return
     }
 
-    if (isNaN(left)) {
+    if (!left) {
         res.status(400).json({
             "errors": [
                 {
@@ -32,7 +32,36 @@ app.get('/calculate', (req, res) => {
         return
     }
 
+    if (isNaN(+ right)) {
+        res.status(422).json({
+            "errors": [
+                {
+                    "status": "422",
+                    "title": "Invalid parameter value",
+                    "detail": "'right' operand must be a number"
+                }
+            ]
+        });
+        return
+    }
+
+    if (isNaN(+ left)) {
+        res.status(422).json({
+            "errors": [
+                {
+                    "status": "422",
+                    "title": "Invalid parameter value",
+                    "detail": "'left' operand must be a number"
+                }
+            ]
+        });
+        return
+    }
+
     let result = 0
+
+    right = + right
+    left = + left
 
     if (action) {
         switch (action) {
