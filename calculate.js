@@ -2,102 +2,94 @@ const express = require('express')
 const app = express()
 
 app.get('/calculate', (req, res) => {
-    let left = req.query['left']
-    let right = req.query['right']
+    let left = Number(req.query['left'])
+    let right = Number(req.query['right'])
     const action = req.query['action']
 
-    if (!right) {
-        res.status(400).json({
-            "errors": [
-                {
-                    "status": "400",
-                    "title": "Missing parameter",
-                    "detail": "'right' operand must be supplied"
-                }
-            ]
-        });
-        return
-    }
+    const errors = validate(action, left, right)
 
-    if (!left) {
-        res.status(400).json({
-            "errors": [
-                {
-                    "status": "400",
-                    "title": "Missing parameter",
-                    "detail": "'left' operand must be supplied"
-                }
-            ]
-        });
-        return
-    }
-
-    if (isNaN(+ right)) {
-        res.status(422).json({
-            "errors": [
-                {
-                    "status": "422",
-                    "title": "Invalid parameter value",
-                    "detail": "'right' operand must be a number"
-                }
-            ]
-        });
-        return
-    }
-
-    if (isNaN(+ left)) {
-        res.status(422).json({
-            "errors": [
-                {
-                    "status": "422",
-                    "title": "Invalid parameter value",
-                    "detail": "'left' operand must be a number"
-                }
-            ]
-        });
-        return
-    }
-
-    let result = 0
-
-    right = + right
-    left = + left
-
-    if (action) {
-        switch (action) {
-            case 'add': result = left + right
-                break
-            case 'substract': result = left - right
-                break
-            case 'multiply': result = left * right
-                break
-            case 'divide': result = left / right
-                break
-            default: res.status(422).json({
-                "errors": [
-                    {
-                        "status": "422",
-                        "title": "Invalid parameter value",
-                        "detail": "'" + action + "'" + " is an unknown action"
-                    }
-                ]
-            });
-                return
-        }
+    if (errors.length > 0) {
+        res.status(errors[0].status).json({ 'errors': errors }).send()
     } else {
-        res.status(400).json({
-            "errors": [
-                {
-                    "status": "400",
-                    "title": "Missing parameter",
-                    "detail": "parameter 'action' must be supplied"
-                }
-            ]
-        });
-        return
+        const result = calculate(action, left, right)
+        res.status(200).json({ 'data': result }).send()
     }
-
-    res.status(200).json({ 'data': result })
 })
 
-app.listen(3000)
+app.listen(3000);
+
+function validate(action, left, right) {
+    let errors = [];
+    if (!right) {
+        errors = [
+            {
+                "status": "400",
+                "title": "Missing parameter",
+                "detail": "'right' operand must be supplied"
+            }
+        ]
+    } else if (!left) {
+        errors = [
+            {
+                "status": "400",
+                "title": "Missing parameter",
+                "detail": "'left' operand must be supplied"
+            }
+        ]
+    } else if (isNaN(right)) {
+        errors = [
+            {
+                "status": "422",
+                "title": "Invalid parameter value",
+                "detail": "'right' operand must be a number"
+            }
+        ]
+    } else if (isNaN(left)) {
+        errors = [
+            {
+                "status": "422",
+                "title": "Invalid parameter value",
+                "detail": "'left' operand must be a number"
+            }
+        ]
+    } else if (action) {
+        switch (action) {
+            case 'add':
+            case 'substract':
+            case 'multiply':
+            case 'divide': return errors
+            default: errors = [
+                {
+                    "status": "422",
+                    "title": "Invalid parameter value",
+                    "detail": "'" + action + "'" + " is an unknown action"
+                }
+            ]
+        }
+    } else if (!action) {
+        errors = [
+            {
+                "status": "400",
+                "title": "Missing parameter",
+                "detail": "parameter 'action' must be supplied"
+            }
+        ]
+    }
+
+    return errors
+}
+
+function calculate(action, left, right) {
+    let result;
+    switch (action) {
+        case 'add': result = left + right
+            break
+        case 'substract': result = left - right
+            break
+        case 'multiply': result = left * right
+            break
+        case 'divide': result = left / right
+            break
+    }
+    return result
+}
